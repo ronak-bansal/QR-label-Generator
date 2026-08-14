@@ -1,0 +1,19 @@
+{
+  "scripts": {
+    "dev": "npm --prefix QR-Code-Generator run dev",
+    "build": "npm --prefix QR-Code-Generator run build",
+    "preview": "npm --prefix QR-Code-Generator run preview"
+  },
+  "dependencies": {
+    "@tabler/icons-react": "^3.46.0",
+    "react-qr-code": "^2.2.0",
+    "react-toastify": "^11.1.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.5.4",
+    "gh-pages": "^6.3.0",
+    "postcss": "^8.5.26",
+    "tailwindcss": "^4.3.3"
+  }
+}
+
