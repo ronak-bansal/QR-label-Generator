@@ -1,19 +1,20 @@
-const FIELD_LENGTHS = {
-  ITEM: 30,
-  LOT: 20,
-  QTY: 35,
+const PAD_COUNTS = {
+  ITEM: 10,
+  LOT: 15,
+  QTY: 31,
 };
 
 const PAD_CHARACTER = "@";
 
-const pad = (value, length) => {
-  return value.toString().padEnd(length, PAD_CHARACTER);
+const appendPadding = (value, count) => {
+  const str = value !== undefined && value !== null ? value.toString().trim() : "";
+  return str + PAD_CHARACTER.repeat(count);
 };
 
-export const generateQRString = (item, lot, qty) => {
+export const generateQRString = (item = "", lot = "", qty = "") => {
   return (
-    pad(item.trim(), FIELD_LENGTHS.ITEM) +
-    pad(lot.trim(), FIELD_LENGTHS.LOT) +
-    pad(qty.toString().trim(), FIELD_LENGTHS.QTY)
+    appendPadding(item, PAD_COUNTS.ITEM) +
+    appendPadding(lot, PAD_COUNTS.LOT) +
+    appendPadding(qty, PAD_COUNTS.QTY)
   );
 };
