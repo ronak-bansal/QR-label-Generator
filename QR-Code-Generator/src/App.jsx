@@ -83,7 +83,8 @@ function App() {
     );
   }
 
-  return <QRGenerator />;
+
+return <QRGenerator />;
 }
 
 export default App;
