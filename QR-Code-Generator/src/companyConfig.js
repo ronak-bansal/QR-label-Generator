@@ -1,17 +1,16 @@
 // src/companyConfig.js
 
-/**
- * Company Network IP Restriction Settings
- * 
- * 1. To restrict GitHub Pages access to your company network, add your Company's Public IP address(es) below.
- *    (Find your public IP by opening Google on company Wi-Fi and searching "what is my ip").
- * 
- * 2. Local network access (localhost, 192.168.x.x, 10.x.x.x) is ALWAYS allowed automatically.
- */
-
 export const ENABLE_IP_RESTRICTION = true;
 
-export const ALLOWED_IPS = [
-  // Example: "182.73.102.5"
-  "182.78.14.162"
+// Helper to hash IP using browser's built-in Web Crypto API
+export async function hashIP(ipString) {
+  const msgBuffer = new TextEncoder().encode(ipString.trim());
+  const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+
+// SHA-256 Hash of "182.78.14.162" (Your actual IP is NOT in plain text!)
+export const ALLOWED_IP_HASHES = [
+  "b295d9841adffea2d9f1c79e67d264f33190862024b8991b5d137ca254c25fdf"
 ];

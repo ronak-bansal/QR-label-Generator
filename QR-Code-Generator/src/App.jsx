@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import QRGenerator from "./QRGenerator";
-import { ALLOWED_IPS, ENABLE_IP_RESTRICTION } from "./companyConfig";
+import { ALLOWED_IP_HASHES, ENABLE_IP_RESTRICTION, hashIP } from "./companyConfig";
 
 function App() {
   const [isAllowed, setIsAllowed] = useState(null);
@@ -21,15 +21,13 @@ function App() {
       return;
     }
 
-    // On GitHub Pages / external domain, fetch Public IP
+    // On GitHub Pages, fetch Public IP and hash it
     fetch("https://api.ipify.org?format=json")
       .then((res) => res.json())
-      .then((data) => {
+      .then(async (data) => {
         setUserIp(data.ip);
-        if (
-          ALLOWED_IPS.includes(data.ip) ||
-          ALLOWED_IPS.includes("YOUR_COMPANY_PUBLIC_IP_HERE")
-        ) {
+        const hashedUserIp = await hashIP(data.ip);
+        if (ALLOWED_IP_HASHES.includes(hashedUserIp)) {
           setIsAllowed(true);
         } else {
           setIsAllowed(false);
@@ -89,4 +87,3 @@ function App() {
 }
 
 export default App;
-
