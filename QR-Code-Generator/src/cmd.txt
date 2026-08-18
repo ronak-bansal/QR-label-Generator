@@ -1,0 +1,9 @@
+# Step 1: Save and commit your local changes
+# Step 2: Push source code to GitHub
+# Step 3: Build & update the live hosted site (GitHub Pages)
+
+
+git add .
+git commit -m "Describe your code changes here"
+git push origin main
+npm --prefix QR-Code-Generator run deploy
