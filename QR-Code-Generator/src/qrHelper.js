@@ -18,3 +18,9 @@ export const generateQRString = (item = "", lot = "", qty = "") => {
     appendPadding(qty, PAD_COUNTS.QTY)
   );
 };
+/*
+git pull --rebase origin main
+git add .
+git commit --amend --no-edit
+git push origin main   
+*/
