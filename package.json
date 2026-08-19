@@ -2,7 +2,9 @@
   "scripts": {
     "dev": "npm --prefix QR-Code-Generator run dev",
     "build": "npm --prefix QR-Code-Generator run build",
-    "preview": "npm --prefix QR-Code-Generator run preview"
+    "preview": "npm --prefix QR-Code-Generator run preview",
+    "host": "serve -s QR-Code-Generator/dist -l 3000 --host 0.0.0.0",
+    "serve": "npm run build && serve -s QR-Code-Generator/dist -l 3000 --host 0.0.0.0"
   },
   "dependencies": {
     "@tabler/icons-react": "^3.46.0",

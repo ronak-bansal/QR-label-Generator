@@ -7,7 +7,7 @@ function App() {
   const [userIp, setUserIp] = useState("");
 
   useEffect(() => {
-    // Local LAN (10.x.x.x, 192.168.x.x, localhost) is ALWAYS allowed
+    
     const hostname = window.location.hostname;
     const isLocalNetwork =
       hostname === "localhost" ||
@@ -21,7 +21,7 @@ function App() {
       return;
     }
 
-    // On GitHub Pages, fetch Public IP and match with ALLOWED_IPS
+    
     fetch("https://api.ipify.org?format=json")
       .then((res) => res.json())
       .then((data) => {
