@@ -1,10 +1,31 @@
-# 🚀 Hosting QR Code Generator Locally on an Always-On Windows Machine
+# 🚀 Hosting QR Code Generator Locally on Target Windows PC
 
-This guide walks you through setting up **PM2** and **`serve`** to keep the app running 24/7 on your local network (LAN) and automatically restart whenever the target Windows PC boots up or restarts.
+There are **two ways** to host this application:
 
 ---
 
-## 🛠️ Step 1: Install Node.js & Dependencies on the Server PC
+## 🌟 Method 1: Zero-NPM / Standalone Mode (Recommended if NPM is Restricted)
+No `npm install`, no `pm2`, and no internet connection needed on the target PC. [server.js](file:///d:/COMSYN/QR%20generator/server.js) uses pure built-in Node.js libraries.
+
+### 📦 Files to copy to Target PC (Total Size < 1 MB):
+```text
+C:\QR-App\
+├── dist\             (from QR-Code-Generator/dist)
+├── server.js
+├── start.bat
+├── start_silent.vbs
+└── stop.bat
+```
+
+### ⚡ Running the App:
+- **Manual Launch**: Double-click `start.bat`.
+- **Silent Background Launch**: Double-click `start_silent.vbs` (runs hidden with no window).
+- **Auto-start on Windows Boot**: Press `Win + R`, type `shell:startup`, and place a shortcut to `start_silent.vbs` in that folder.
+- **Stop Server**: Double-click `stop.bat`.
+
+---
+
+## 🛠️ Method 2: Using PM2 & Global Packages (Optional)
 
 1. **Download & Install Node.js** (LTS Version) on the target Windows machine:
    👉 [https://nodejs.org/](https://nodejs.org/)

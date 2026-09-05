@@ -4,7 +4,9 @@ const path = require('path');
 
 const PORT = process.env.PORT || 3000;
 const HOST = '0.0.0.0';
-const DIST_DIR = path.join(__dirname, 'QR-Code-Generator', 'dist');
+const DIST_DIR = fs.existsSync(path.join(__dirname, 'dist'))
+  ? path.join(__dirname, 'dist')
+  : path.join(__dirname, 'QR-Code-Generator', 'dist');
 
 const MIME_TYPES = {
   '.html': 'text/html; charset=utf-8',
