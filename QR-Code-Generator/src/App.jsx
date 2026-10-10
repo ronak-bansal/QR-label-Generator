@@ -24,10 +24,10 @@ function App() {
       hostname.startsWith("10.") ||
       hostname.startsWith("172.");
 
-    if (isLocalNetwork || !ENABLE_IP_RESTRICTION) {
-      setIsAllowed(true);
-      return;
-    }
+    // if (isLocalNetwork || !ENABLE_IP_RESTRICTION) {
+    //   setIsAllowed(true);
+    //   return;
+    // }
 
     // 2. Fetch public IP if outside local network
     fetch("https://api.ipify.org?format=json")
@@ -107,7 +107,7 @@ function App() {
               value={pinInput}
               onChange={(e) => setPinInput(e.target.value.replace(/\D/g, ""))}
               placeholder="••••"
-              className="w-48 text-center text-3xl tracking-[1em] py-2 px-4 bg-gray-900 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-indigo-500 font-mono mx-auto block"
+              className="w-40 text-center text-2xl tracking-[1em] py-2 px-2 bg-gray-900 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-indigo-500 font-mono mx-auto block"
               autoFocus
             />
 

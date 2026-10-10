@@ -127,8 +127,8 @@ const QRGenerator = () => {
               width: 100% !important;
             }
             .label-qr-box {
-              width: 440px !important;
-              height: 440px !important;
+              width: 520px !important;
+              height: 520px !important;
               padding: 1rem !important;
               border: none !important;
             }
@@ -166,8 +166,8 @@ const QRGenerator = () => {
               justify-content: center !important;
             }
             .label-qr-box {
-              width: 400px !important;
-              height: 400px !important;
+              width: 480px !important;
+              height: 480px !important;
               padding: 1rem !important;
               border: none !important;
             }

@@ -70,7 +70,7 @@ const Label = ({ item, lot, qty, qrValue, orientation = "landscape" }) => {
           {qrValue ? (
             <QRCode
               value={qrValue}
-              size={isPortrait ? 280 : 300}
+              size={isPortrait ? 360 : 400}
               bgColor="#FFFFFF"
               fgColor="#000000"
               level="L"
