@@ -5,3 +5,4 @@ export const ALLOWED_IPS = [
   "183.182.85.107",
 ];
 
+export const ACCESS_PIN = '1234';

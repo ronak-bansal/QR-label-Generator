@@ -1,13 +1,21 @@
 import { useEffect, useState } from "react";
 import QRGenerator from "./QRGenerator";
-import { ALLOWED_IPS, ENABLE_IP_RESTRICTION } from "./companyConfig";
+import { ALLOWED_IPS, ENABLE_IP_RESTRICTION, ACCESS_PIN } from "./companyConfig";
 
 function App() {
   const [isAllowed, setIsAllowed] = useState(null);
   const [userIp, setUserIp] = useState("");
+  const [pinInput, setPinInput] = useState("");
+  const [pinError, setPinError] = useState("");
 
   useEffect(() => {
-    
+    // 1. Check if user already unlocked access using PIN in this session
+    const isPinSaved = sessionStorage.getItem("pin_authorized") === "true";
+    if (isPinSaved) {
+      setIsAllowed(true);
+      return;
+    }
+
     const hostname = window.location.hostname;
     const isLocalNetwork =
       hostname === "localhost" ||
@@ -21,7 +29,7 @@ function App() {
       return;
     }
 
-    
+    // 2. Fetch public IP if outside local network
     fetch("https://api.ipify.org?format=json")
       .then((res) => res.json())
       .then((data) => {
@@ -31,30 +39,47 @@ function App() {
         if (ALLOWED_IPS.includes(clientIp)) {
           setIsAllowed(true);
         } else {
+          // IP not in allowed list -> Require PIN authentication
           setIsAllowed(false);
         }
       })
       .catch(() => {
+        // Fetch failed -> Fallback to requiring PIN authentication
         setIsAllowed(false);
       });
   }, []);
 
+  // Handle PIN Submission
+  const handlePinSubmit = (e) => {
+    e.preventDefault();
+    if (pinInput === ACCESS_PIN) {
+      sessionStorage.setItem("pin_authorized", "true");
+      setIsAllowed(true);
+      setPinError("");
+    } else {
+      setPinError("Invalid 4-digit PIN. Please try again.");
+      setPinInput("");
+    }
+  };
+
+  // Loading Screen
   if (isAllowed === null) {
     return (
       <div className="flex h-screen items-center justify-center bg-gray-100 text-gray-700 font-sans">
         <div className="text-center">
           <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-indigo-600 mx-auto mb-3"></div>
-          <p className="text-sm font-medium">Verifying Company Network Access...</p>
+          <p className="text-sm font-medium">Verifying Access...</p>
         </div>
       </div>
     );
   }
 
+  // 4-Digit PIN Unlock Screen (When IP is outside/restricted)
   if (!isAllowed) {
     return (
       <div className="flex h-screen items-center justify-center bg-gray-900 text-white font-sans p-4">
         <div className="max-w-md w-full bg-gray-800 rounded-2xl shadow-2xl p-8 text-center border border-gray-700">
-          <div className="w-16 h-16 bg-red-500/10 text-red-500 rounded-full flex items-center justify-center mx-auto mb-4 border border-red-500/20">
+          <div className="w-16 h-16 bg-indigo-500/10 text-indigo-400 rounded-full flex items-center justify-center mx-auto mb-4 border border-indigo-500/20">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-8 w-8"
@@ -70,13 +95,38 @@ function App() {
               />
             </svg>
           </div>
-          <h2 className="text-2xl font-bold text-red-400 mb-2">Access Restricted</h2>
+          <h2 className="text-2xl font-bold text-white mb-2">Outside Access Security</h2>
           <p className="text-gray-300 text-sm mb-6">
-            This application is restricted to authorized <strong>Company Network</strong> access only.
+            Enter the 4-digit PIN to gain access to the QR Generator.
           </p>
+
+          <form onSubmit={handlePinSubmit} className="space-y-4">
+            <input
+              type="password"
+              maxLength={4}
+              value={pinInput}
+              onChange={(e) => setPinInput(e.target.value.replace(/\D/g, ""))}
+              placeholder="••••"
+              className="w-48 text-center text-3xl tracking-[1em] py-2 px-4 bg-gray-900 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-indigo-500 font-mono mx-auto block"
+              autoFocus
+            />
+
+            {pinError && (
+              <p className="text-red-400 text-xs font-medium">{pinError}</p>
+            )}
+
+            <button
+              type="submit"
+              disabled={pinInput.length !== 4}
+              className="w-full py-2.5 px-4 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors"
+            >
+              Unlock Access
+            </button>
+          </form>
+
           {userIp && (
-            <div className="bg-gray-900/60 p-3 rounded-lg border border-gray-700/50 text-xs text-gray-400 font-mono">
-              Your Public IP: {userIp}
+            <div className="mt-6 bg-gray-900/60 p-2.5 rounded-lg border border-gray-700/50 text-xs text-gray-400 font-mono">
+              Your IP: {userIp}
             </div>
           )}
         </div>
